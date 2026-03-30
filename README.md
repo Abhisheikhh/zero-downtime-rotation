@@ -6,14 +6,7 @@ A production-ready implementation of **zero-downtime database credential rotatio
 
 ## Architecture
 
-```
-EventBridge  cron(0/5 * * * ? *)  →  trigger-rotation-primary  →  rotates primary secret
-EventBridge  cron(2/5 * * * ? *)  →  trigger-rotation-backup   →  rotates backup secret
-                                                                          ↓
-                                              lambda_function.py (rotation handler)
-                                                                          ↓
-                                                              RDS MySQL (password updated)
-```
+
 
 - **Primary user** rotates every 5 minutes (at :00, :05, :10 …)
 - **Backup user** rotates every 5 minutes, **staggered by 2 minutes** (at :02, :07, :12 …)
